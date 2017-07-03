@@ -25,7 +25,7 @@ class Google(object):
 
         print url
 
-        DIR="images"
+        DIR="../images"
         header={
             'User-Agent':"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36"
         }
@@ -68,7 +68,8 @@ class Google(object):
 
 if __name__ == '__main__':
 
-    pokemons = ["pikachu", "bulbassaur", "charmander", "squirtle"]
+    pokemons = ["snorlax"]
+    # pokemons = ["pikachu", "bulbassaur", "charmander", "squirtle"]
 
     for pokemon in pokemons:
         Google.get_image(pokemon, num_images=20)
