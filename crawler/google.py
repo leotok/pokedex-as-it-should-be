@@ -1,8 +1,6 @@
 import requests
-import re
-import urllib2
+import urllib
 import os
-import cookielib
 import json
 from bs4 import BeautifulSoup
 
@@ -11,19 +9,18 @@ class Google(object):
 
     @classmethod
     def get_soup(self, url,header):
-        return BeautifulSoup(urllib2.urlopen(urllib2.Request(url,headers=header)),'html.parser')
+        return BeautifulSoup(urllib.request.urlopen(urllib.request.Request(url,headers=header)),'html.parser')
 
     @classmethod
     def get_image(self, image_name, num_images=1):
         google_url = "https://www.google.com"
-        image_type = "ActiOn"
+        #image_type = "ActiOn"
 
         image_name = image_name.split()
         image_name ='+'.join(image_name)
-        
-        url = google_url + "/search?q="+image_name+"&source=lnms&tbm=isch"
 
-        print url
+        url = google_url + "/search?q="+image_name+"&source=lnms&tbm=isch"
+        print(url)
 
         DIR="../images"
         header={
@@ -31,6 +28,9 @@ class Google(object):
         }
         soup = self.get_soup(url,header)
 
+        #Extrai os links das imagens imagens do HTML Soup.
+        #"ou": link da imagem
+        #"ity": tipo da imagem (ex: .png)
         actual_images = []
         for i, a in enumerate(soup.find_all("div",{"class":"rg_meta"})):
             if i == num_images:
@@ -38,17 +38,20 @@ class Google(object):
             link , Type = json.loads(a.text)["ou"] , json.loads(a.text)["ity"]
             actual_images.append((link,Type))
 
+        #cria diretorio /images, se nao existir
         if not os.path.exists(DIR):
             os.mkdir(DIR)
-        DIR = os.path.join(DIR, image_name.split()[0])
 
+        #cria diretorio para o pokemon /images/<nome_do_pokemon>, se nao existir
+        DIR = os.path.join(DIR, image_name.split()[0])
         if not os.path.exists(DIR):
             os.mkdir(DIR)
         
+        #Salva cada imagem no diretório.
         for i , (img , Type) in enumerate(actual_images):
             try:
-                req = urllib2.Request(img, headers={'User-Agent' : header})
-                raw_img = urllib2.urlopen(req).read()
+                req = urllib.request.Request(img, headers=header)
+                raw_img = urllib.request.urlopen(req).read()
 
                 cntr = image_name + str(len([i for i in os.listdir(DIR)]) + 1)
 
@@ -60,18 +63,18 @@ class Google(object):
                 f.write(raw_img)
                 f.close()
             except Exception as e:
-                print "could not load : "+img
-                print e
-        print "DIR:", DIR
+                print("could not load : "+img)
+                print(str(e)+"\n")
+        print("DIR:", DIR)
         return DIR
 
 
 if __name__ == '__main__':
 
     pokemons = ["snorlax"]
-    # pokemons = ["pikachu", "bulbassaur", "charmander", "squirtle"]
+    #pokemons = ["snorlax", "pikachu", "bulbassaur", "charmander", "squirtle"]
 
     for pokemon in pokemons:
-        Google.get_image(pokemon, num_images=20)
+        Google.get_image(pokemon, num_images=10)
 
     
