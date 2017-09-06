@@ -1,1 +1,1 @@
-web gunicorn manage:api/app
+web gunicorn app:api/app
