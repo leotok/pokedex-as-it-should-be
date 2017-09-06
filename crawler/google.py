@@ -68,8 +68,7 @@ class Google(object):
 
 if __name__ == '__main__':
 
-    pokemons = ["snorlax"]
-    # pokemons = ["pikachu", "bulbassaur", "charmander", "squirtle"]
+    pokemons = ["pikachu", "bulbassaur", "charmander", "squirtle"]
 
     for pokemon in pokemons:
         Google.get_image(pokemon, num_images=20)
