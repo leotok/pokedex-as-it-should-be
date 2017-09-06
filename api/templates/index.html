@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .image { 
+            position: relative; 
+            width: 100%;
+            margin-top: -10px;
+            float: auto;
+            text-align: center; 
+        }
+
+        .image h2 { 
+            position: absolute; 
+            top: 180px; 
+            left: 180px; 
+            width: 100%; 
+         }
+
+         .image form { 
+            position: absolute; 
+            top: 180px; 
+            left: -210px; 
+            width: 100%; 
+         }
+
+         .pokemon-image {
+             width: 330px;
+             height: 332px;
+             margin-left:10px;
+             margin-top:-24px;
+         }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="image">
+        <img src="static/images/Pokedex.png" alt="Pokedex">
+
+        <form method="POST" enctype="multipart/form-data" action="predict/pokemon">
+            {% if pokemon_image %}
+                <img class="pokemon-image" src="{{pokemon_image}}" alt="">
+            {% else %}
+                <p>
+                    <input type=file name=file>
+                    <input type=submit value=GO!>
+                </p>
+            {% endif %}
+        </form>
+
+        {% if pokemon_name %}
+            <h2>{{pokemon_name}}</h2>
+        {% endif %} 
+
+    </div>
+    
+    
+
+</body>
+</html>
