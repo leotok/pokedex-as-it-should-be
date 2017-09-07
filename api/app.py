@@ -1,7 +1,7 @@
 import json
 import os, sys
 
-from flask import Flask, render_template, redirect, url_for, request, send_from_directory, send_file
+from flask import Flask, render_template, redirect, url_for, request, send_from_directory, send_file, flash
 from werkzeug.utils import secure_filename
 
 REPO_PATH = os.path.dirname(os.path.abspath(os.path.dirname((__file__))))
@@ -19,6 +19,12 @@ from ml.predict import predict_pokemon
 UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
+pokemon_entries = {
+    "Charmander": "The flame at the tip of its tail makes a sound as it burns. You can only hear it in quiet places.",
+    "Pikachu": "It keeps its tail raised to monitor its surroundings. If you yank its tail, it will try to bite you.",
+    "Squirtle": "Shoots water at prey while in the water. Withdraws into its shell when in danger."
+}
+
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -34,11 +40,6 @@ def allowed_file(filename):
 
 ############## Views ##############
 
-@app.route('/<path:path>')
-def send_static(path):
-    print "SEND STATIC"
-    return send_from_directory(API_ROOT, path)
-
 @app.route('/')
 def index():
     try:
@@ -47,15 +48,13 @@ def index():
         pokemon_image = None
 
     try:
-        pokemon_name = predict_pokemon(pokemon_image)
+        pokemon_name = predict_pokemon(pokemon_image).capitalize()
+        pokemon_desc = pokemon_entries.get(pokemon_name)
     except:
         pokemon_name = None
-    return render_template('index.html', pokemon_image=pokemon_image, pokemon_name=pokemon_name)
+        pokemon_desc = None
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(FULL_UPLOAD_PATH,
-                               filename)
+    return render_template('index.html', pokemon_image=pokemon_image, pokemon_name=pokemon_name, pokemon_desc=pokemon_desc)
 
 @app.route('/predict/pokemon', methods=['POST'])
 def get_pokemon_info():
@@ -80,9 +79,13 @@ def get_pokemon_info():
     return render_template('bad request')
 
 
-@app.route('/stop')
-def stop():
-    return redirect(url_for('index'))
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(FULL_UPLOAD_PATH, filename)
+
+@app.route('/<path:path>')
+def send_static(path):
+    return send_from_directory(API_ROOT, path)
 
 
 if __name__ == '__main__':

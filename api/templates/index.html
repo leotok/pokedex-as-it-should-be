@@ -3,19 +3,12 @@
 <head>
     <style>
         .image { 
-            position: relative; 
+            position: absolute; 
             width: 100%;
             margin-top: -10px;
             float: auto;
             text-align: center; 
         }
-
-        .image h2 { 
-            position: absolute; 
-            top: 180px; 
-            left: 180px; 
-            width: 100%; 
-         }
 
          .image form { 
             position: absolute; 
@@ -30,16 +23,60 @@
              margin-left:10px;
              margin-top:-24px;
          }
+
+         .round-button {
+            top: 500px;
+            left: 295px;
+            width:30px;
+            height:30px;
+            border-radius:50%;
+            position: absolute;
+         }
+
+         body {
+            font-family: monospace;
+            font-weight: bold;
+            color: black
+         }
+
+         .round-button-text { 
+            margin-left: 2.5rem;
+            font-size: large;
+            background-color: transparent;
+            margin-top: 5px;
+         }
+
+         .pokemon-name {
+             width: 200px;
+             text-align: center;
+             position: absolute; 
+             top: 180px; 
+             left: 750px; 
+         }
+
+         .pokemon-desc {
+             width: 250px;
+             text-align: left;
+             position: absolute;
+             top: 250px;
+             left: 730px;
+         }
     </style>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Pokedex AI</title>
 </head>
 <body>
     <div class="image">
         <img style="width:800px" src="https://f1.pepst.com/c/1F0965/651720/ssc3/home/083/pokemon2012/pokedex.png_480_480_0_64000_0_1_0.png" alt="Pokedex">
+
+        <a href=".">
+            <div class="round-button">
+                <p class="round-button-text">Reiniciar</p>
+            </div>
+        </a>
 
         <form method="POST" enctype="multipart/form-data" action="predict/pokemon">
             {% if pokemon_image %}
@@ -52,13 +89,37 @@
             {% endif %}
         </form>
 
-        {% if pokemon_name %}
-            <h2>{{pokemon_name}}</h2>
-        {% endif %} 
+        <div class="pokemon-info">
+            {% if pokemon_name %}
+                <h2 class="pokemon-name">{{pokemon_name}}</h2>
+            {% endif %} 
+
+            
+            {% if pokemon_desc %}
+                <div style="width:200px">
+                    <span class="pokemon-desc">{{pokemon_desc}}</span>
+                </div>
+            {% endif %}
+        </div>
+            
+        
 
     </div>
     
-    
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  
+    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+    <script>
 
+        $(function() {
+            var pokemon_name = "{{pokemon_name}}";
+            var pokemon_desc = "{{pokemon_desc}}"
+            if (pokemon_name != "None")
+            {
+                responsiveVoice.speak(pokemon_name + ";" + pokemon_desc);
+            }
+        });
+    </script>
+    
 </body>
 </html>
