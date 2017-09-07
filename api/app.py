@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 REPO_PATH = os.path.dirname(os.path.abspath(os.path.dirname((__file__))))
 ML_PATH = os.path.join(REPO_PATH, "ml")
-IMAGES_PATH = os.path.join(os.path.join(os.path.abspath(os.path.dirname((__file__))), 'static'), 'images')
+API_ROOT = os.path.abspath(os.path.dirname((__file__)))
 
 print ML_PATH
 
@@ -34,10 +34,10 @@ def allowed_file(filename):
 
 ############## Views ##############
 
-@app.route('/static/images/<path:path>')
+@app.route('/<path:path>')
 def send_static(path):
-    print "SEND STATIC", os.path.join('static/images', path)
-    return send_file(os.path.join('static/images', path))
+    print "SEND STATIC"
+    return send_from_directory(API_ROOT, path)
 
 @app.route('/')
 def index():
