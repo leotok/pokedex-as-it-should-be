@@ -18,7 +18,7 @@ UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 FULL_UPLOAD_PATH = os.path.abspath(os.path.dirname(__file__)) + app.config['UPLOAD_FOLDER']
@@ -31,6 +31,10 @@ def allowed_file(filename):
 
 
 ############## Views ##############
+
+@app.route('/static/images/<path:path>')
+def send_static(path):
+    return send_from_directory('static/images', path)
 
 @app.route('/')
 def index():
