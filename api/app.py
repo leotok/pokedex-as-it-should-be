@@ -18,7 +18,7 @@ UPLOAD_FOLDER = '/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 FULL_UPLOAD_PATH = os.path.abspath(os.path.dirname(__file__)) + app.config['UPLOAD_FOLDER']
