@@ -1,7 +1,7 @@
 import json
 import os, sys
 
-from flask import Flask, render_template, redirect, url_for, request, send_from_directory
+from flask import Flask, render_template, redirect, url_for, request, send_from_directory, send_file
 from werkzeug.utils import secure_filename
 
 REPO_PATH = os.path.dirname(os.path.abspath(os.path.dirname((__file__))))
@@ -36,8 +36,8 @@ def allowed_file(filename):
 
 @app.route('/static/images/<path:path>')
 def send_static(path):
-    print "SEND STATIC"
-    return send_from_directory(IMAGES_PATH, path)
+    print "SEND STATIC", os.path.join('static/images', path)
+    return send_file(os.path.join('static/images', path))
 
 @app.route('/')
 def index():
