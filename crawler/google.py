@@ -40,37 +40,36 @@ class Google(object):
 
         if not os.path.exists(DIR):
             os.mkdir(DIR)
-        DIR = os.path.join(DIR, image_name.split()[0])
-
-        if not os.path.exists(DIR):
-            os.mkdir(DIR)
         
         for i , (img , Type) in enumerate(actual_images):
-            try:
-                req = urllib2.Request(img, headers={'User-Agent' : header})
-                raw_img = urllib2.urlopen(req).read()
+            if Type != "gif":
+                try:
+                    req = urllib2.Request(img, headers={'User-Agent' : header})
+                    raw_img = urllib2.urlopen(req).read()
 
-                cntr = image_name + str(len([i for i in os.listdir(DIR)]) + 1)
+                    cntr = image_name + "_" + str(len([i for i in os.listdir(DIR) if image_name in i]) + 1)
 
-                if len(Type) == 0:
-                    f = open(os.path.join(DIR , str(cntr)+".jpg"), 'wb')
-                else :
-                    f = open(os.path.join(DIR , str(cntr)+"."+Type), 'wb')
+                    if len(Type) == 0:
+                        f = open(os.path.join(DIR , str(cntr)+".jpg"), 'wb')
+                    else :
+                        f = open(os.path.join(DIR , str(cntr)+"."+Type), 'wb')
 
-                f.write(raw_img)
-                f.close()
-            except Exception as e:
-                print "could not load : "+img
-                print e
+                    f.write(raw_img)
+                    f.close()
+                except Exception as e:
+                    print "could not load : "+img
+                    print e
         print "DIR:", DIR
-        return DIR
+        
 
 
 if __name__ == '__main__':
 
-    pokemons = ["pikachu", "bulbassaur", "charmander", "squirtle"]
+    pokemons = ["pikachu", "charmander", "bulbassaur", "diglett", "mewtwo", "magikarp", "staryu", "onix", "machop",
+                "charizard", "snorlax", "blastoise", "mew", "psyduck", "gengar", "dragonite", "gyrados", "scyther",
+                "growlithe", "arcanine", "articuno", "zapdos", "haunter", "squirtle", "eevee", "alakazam", "lapras"]
 
     for pokemon in pokemons:
-        Google.get_image(pokemon, num_images=20)
+        Google.get_image(pokemon, num_images=40)
 
     

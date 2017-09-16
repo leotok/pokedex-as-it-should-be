@@ -14,21 +14,10 @@ import pickle
 import pandas
 import matplotlib.pyplot as plt
 
-
-# construct the argument parse and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-d", "--dataset", required=True,
-    help="path to input dataset")
-ap.add_argument("-k", "--neighbors", type=int, default=1,
-    help="# of nearest neighbors for classification")
-ap.add_argument("-j", "--jobs", type=int, default=-1,
-    help="# of jobs for k-NN distance (-1 uses all available cores)")
-args = vars(ap.parse_args())
-
-
 # grab the list of images that we'll be describing
+IMAGES_PATH = "../images"
 print("[INFO] describing images...")
-imagePaths = list(paths.list_images(args["dataset"]))
+imagePaths = list(paths.list_images(IMAGES_PATH))
  
 # initialize the raw pixel intensities matrix, the features matrix,
 # and labels list
@@ -43,7 +32,7 @@ for (i, imagePath) in enumerate(imagePaths):
     # path as the format: /path/to/dataset/{class}.{image_num}.jpg
     image = cv2.imread(imagePath)
     if image is not None:
-        label = imagePath.split(os.path.sep)[-1].split(".")[0]
+        label = imagePath.split(os.path.sep)[-1].split("_")[0]
     
         # extract raw pixel intensity "features", followed by a color
         # histogram to characterize the color distribution of the pixels
@@ -82,8 +71,8 @@ print("[INFO] features matrix: {:.2f}MB".format(
 
 # train and evaluate a k-NN classifer on the raw pixel intensities
 print("[INFO] evaluating raw pixel accuracy...")
-model = KNeighborsClassifier(n_neighbors=args["neighbors"],
-    n_jobs=args["jobs"])
+model = KNeighborsClassifier(n_neighbors=1,
+    n_jobs=1)
 model.fit(trainRI, trainRL)
 acc = model.score(testRI, testRL)
 print("[INFO] raw pixel accuracy: {:.2f}%".format(acc * 100))
@@ -92,12 +81,12 @@ print("[INFO] raw pixel accuracy: {:.2f}%".format(acc * 100))
 # train and evaluate a k-NN classifer on the histogram
 # representations
 print("[INFO] evaluating histogram accuracy...")
-model = KNeighborsClassifier(n_neighbors=args["neighbors"],
-    n_jobs=args["jobs"])
+model = KNeighborsClassifier(n_neighbors=1,
+    n_jobs=1)
 model.fit(trainFeat, trainLabels)
 acc = model.score(testFeat, testLabels)
 print("[INFO] histogram accuracy: {:.2f}%".format(acc * 100))
 
 # save trained model to a pickle file
-filename = "pokemon_model.sav"
+filename = "knn_model.sav"
 pickle.dump(model, open(filename, 'wb'))

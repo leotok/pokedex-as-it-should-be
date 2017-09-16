@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import os, sys
 
@@ -13,7 +14,7 @@ print ML_PATH
 sys.path.append(REPO_PATH)
 sys.path.append(ML_PATH)
 
-from ml.predict import predict_pokemon
+from ml.predict import predict_knn, predict_mlp
 
 
 UPLOAD_FOLDER = '/uploads'
@@ -22,7 +23,14 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 pokemon_entries = {
     "Charmander": "The flame at the tip of its tail makes a sound as it burns. You can only hear it in quiet places.",
     "Pikachu": "It keeps its tail raised to monitor its surroundings. If you yank its tail, it will try to bite you.",
-    "Squirtle": "Shoots water at prey while in the water. Withdraws into its shell when in danger."
+    "Squirtle": "Shoots water at prey while in the water. Withdraws into its shell when in danger.",
+    "Blastoise": "Once it takes aim at its enemy, it blasts out water with even more force than a fire hose.",
+    "Alakazam": "A Pokemon that can memorize anything. It never forgets what it learns—that's why this Pokemon is smart.",
+    "Charizard": "Charizard, the Flame Pokemon. Charizards powerful flame can melt absolutely anything.",
+    "Bulbasaur": "It can go for days without eating a single morsel. In the bulb on its back, it stores energy.",
+    "Articuno": "A legendary bird Pokemon. It freezes water that is contained in winter air and makes it snow.",
+    "Arcanine": "A legendary Pokemon in China. Many people are charmed by its grace and beauty while running."
+
 }
 
 
@@ -48,7 +56,7 @@ def index():
         pokemon_image = None
 
     try:
-        pokemon_name = predict_pokemon(pokemon_image).capitalize()
+        pokemon_name = predict_mlp(pokemon_image).capitalize()
         pokemon_desc = pokemon_entries.get(pokemon_name)
     except:
         pokemon_name = None

@@ -127,7 +127,11 @@
             var pokemon_desc = "{{pokemon_desc}}"
             if (pokemon_name != "None")
             {
-                responsiveVoice.speak(pokemon_name + ";" + pokemon_desc);
+                responsiveVoice.speak(pokemon_name);
+            }
+            if (pokemon_desc != "None")
+            {
+                responsiveVoice.speak(pokemon_desc);
             }
         });
     </script>

@@ -1,5 +1,7 @@
 import cv2
 import imutils
+import pickle
+from sklearn.preprocessing import StandardScaler
 
 
 def image_to_feature_vector(image, size=(32, 32)):
@@ -25,3 +27,11 @@ def extract_color_histogram(image, bins=(8, 8, 8)):
 
     # return the flattened histogram as the feature vector
     return hist.flatten()
+
+def make_standard(X_train, X_test):
+    scaler = StandardScaler()
+    scaler.fit(X_train)
+    X_train = scaler.transform(X_train)
+    X_test = scaler.transform(X_test)
+    pickle.dump(scaler, open("scaler_model.sav", 'wb'))
+    return X_train, X_test
