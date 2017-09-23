@@ -9,8 +9,6 @@ REPO_PATH = os.path.dirname(os.path.abspath(os.path.dirname((__file__))))
 ML_PATH = os.path.join(REPO_PATH, "ml")
 API_ROOT = os.path.abspath(os.path.dirname((__file__)))
 
-print ML_PATH
-
 sys.path.append(REPO_PATH)
 sys.path.append(ML_PATH)
 
