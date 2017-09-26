@@ -1,0 +1,4 @@
+opencv-python
+imutils==0.3.6
+bs4
+sklearn
