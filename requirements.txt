@@ -1,8 +1,8 @@
-scipy==0.18.1
+scipy
 requests==2.9.1
 bs4==0.0.1
 Flask==0.12.1
-sklearn==0.0
+sklearn
 scikit-learn==0.18
 imutils==0.3.6
 numpy==1.12.0
