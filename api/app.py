@@ -25,7 +25,7 @@ pokemon_entries = {
     "Pikachu": "It keeps its tail raised to monitor its surroundings. If you yank its tail, it will try to bite you.",
     "Squirtle": "Shoots water at prey while in the water. Withdraws into its shell when in danger.",
     "Blastoise": "Once it takes aim at its enemy, it blasts out water with even more force than a fire hose.",
-    "Alakazam": "A Pokemon that can memorize anything. It never forgets what it learns—that's why this Pokemon is smart.",
+    "Alakazam": "A Pokemon that can memorize anything. It never forgets what it learns—thats why this Pokemon is smart.",
     "Charizard": "Charizard, the Flame Pokemon. Charizards powerful flame can melt absolutely anything.",
     "Bulbasaur": "It can go for days without eating a single morsel. In the bulb on its back, it stores energy.",
     "Articuno": "A legendary bird Pokemon. It freezes water that is contained in winter air and makes it snow.",
@@ -47,7 +47,6 @@ def allowed_file(filename):
 
 
 ############## Views ##############
-
 @app.route('/')
 def index():
     try:
@@ -63,6 +62,17 @@ def index():
         pokemon_desc = None
 
     return render_template('index.html', pokemon_image=pokemon_image, pokemon_name=pokemon_name, pokemon_desc=pokemon_desc)
+
+@app.route('/docker-test')
+def testping():
+    hostname = "google.com"
+    response = os.system("ping -c 1 " + hostname)
+
+    #and then check the response...
+    if response == 0:
+        return str(hostname) + ' is up!'
+    else:
+        return str(hostname) + ' is down!'
 
 @app.route('/predict/pokemon', methods=['POST'])
 def get_pokemon_info():
