@@ -3,48 +3,67 @@
 
 <head>
     <style>   
-    	#btn-dg{
-    		width: 100px;
-    		margin-top: 40px;
-    	}
+    	
     	#btn-go{
     		width: 100px;
-    		margin-top: 10px;
+    		margin-top: 1vh;
     	}
-    	#form-container{
-    		margin-top: 10px;
+        #btn-dg{
+    		width: 100px;
+    		margin-top: 2.5vh;
     	}
-    	.titulo {
-    		font-family: 'Open Sans', sans-serif;
-    		}
-    	
-         .pokemon-image {
-             width: 330px;
-             height: 332px;
-             margin-left:10px;
-             margin-top:-24px;
-         }
-
+        
         body {
             font-family: monospace;
             font-weight: bold;
             color: black
          }
 
+    	.titulo {
+    		font-family: 'Open Sans', sans-serif;
+    		}
+    	
+         .pokemon-img {
+            height: auto;
+            width: 20vh;
+            max-width: 190px; 
+         }
+
          .pokemon-name {
-             width: 200px;
+             font-size: 2.5vh;
              text-align: center;
-             position: absolute; 
-             top: 180px; 
-             left: 750px; 
          }
 
          .pokemon-desc {
-             width: 250px;
-             text-align: left;
-             position: absolute;
-             top: 250px;
-             left: 730px;
+            font-size: 1.6vh;
+            text-align: justify;
+         }
+
+         .pokemon-name-div{
+            position: relative;
+            width: 35vw;
+            max-width: 190px;
+            top: -20vh;
+            left: 13.5vh;
+         }
+
+         .pokemon-desc-div{
+            position: relative;
+            width: 35vw;
+            max-width: 190px;
+            top: -20vh; 
+            left: 13.5vh; 
+         }
+
+         .pokemon-img-div{
+            position: relative;
+            margin-top: -26vh;
+            left: -13vh;
+         }
+         
+         .btns-input-div{
+             position: relative;
+             margin-top: 12vh;
          }
     </style>
 
@@ -59,49 +78,55 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Pokedex AI</title>
 </head>
+
 <body>
 	<div class="container-fluid">
-		
 		<h1 class="titulo text-center">Pokedex</h1>
-		
 	</div>
-    <div class="pokedex-img container-fluid">
+    <div class="container-fluid">
 		<img class="img-responsive center-block" src="https://f1.pepst.com/c/1F0965/651720/ssc3/home/083/pokemon2012/pokedex.png_480_480_0_64000_0_1_0.png" alt="Pokedex">
+        
+        <!-- pokemon image -->
+        {% if pokemon_image %}
+        <div class="pokemon-img-div container-fluid">
+            <img class="pokemon-img center-block" src="{{pokemon_image}}" alt="">
+        {% endif %}
+        </div>
+        
+        <!-- pokemon name -->
+        {% if pokemon_name %}
+        <div class="pokemon-name-div container-fluid">
+            <h2 class="pokemon-name center-block">{{pokemon_name}}</h2>
+        </div>
+        {% endif %} 
+      
+        <!-- pokemon description -->
+        {% if pokemon_desc %}
+        <div class="pokemon-desc-div container-fluid">
+            <span class="pokemon-desc center-block">{{pokemon_desc}}</span>
+        </div>
+        {% endif %}
+
     </div>
 
-  <form method="POST" enctype="multipart/form-data" action="predict/pokemon">>
-  {% if pokemon_image %}
-		<img class="pokemon-image" src="{{pokemon_image}}" alt="">
-
-   {% else %}
-    <div class="input-group container col-sm-6" id="form-container">
-
+    <!-- form and buttons -->
+    <div class="container btns-input-div">
+        <form method="POST" enctype="multipart/form-data" action="predict/pokemon">
+            <div class="input-group container col-sm-6" id="form-container">
                 <label class="input-group-btn">
                     <span class="btn btn-primary">
                         Browse&hellip; <input type="file" name=file style="display: none;">
                     </span>
                 </label>
                 <input type="text" class="form-control" readonly>
-   </div>
-    	<button type="submit" class="btn btn-success center-block" id="btn-go">GO!</button>
-   {% endif %}
-   </form>
-   
-	<a href="." class="btn btn-danger center-block" id="btn-dg">Restart</a>
-   	
-
-        <div class="pokemon-info">
-            {% if pokemon_name %}
-                <h2 class="pokemon-name">{{pokemon_name}}</h2>
-            {% endif %} 
-
-            
-            {% if pokemon_desc %}
-                <div style="width:200px">
-                    <span class="pokemon-desc">{{pokemon_desc}}</span>
-                </div>
-            {% endif %}
-        </div>
+            </div>
+            <button type="submit" class="btn btn-success center-block" id="btn-go">GO!</button>
+        </form>
+    
+        <a href="." class="btn btn-danger center-block" id="btn-dg">Restart</a>
+    </div>
+    
+    <!-- available pokemons -->
    <div class="container">
    <div class="jumbotron">
     <h2>Accepted Pokemons:</h2>
@@ -115,6 +140,7 @@
     </ul>
     </div>
     </div>
+
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -147,7 +173,7 @@
     
 
 
-
+<!-- show file name after selecting image -->
 <script>
     $(function() {
 
