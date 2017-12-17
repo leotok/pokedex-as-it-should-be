@@ -1,7 +1,12 @@
-from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import LabelEncoder
 from sklearn.cross_validation import train_test_split
 from imutils import paths
 from preprocess import image_to_feature_vector, make_standard
+
+from keras.models import Sequential
+from keras.layers import Activation, Dense
+from keras.optimizers import SGD
+from keras.utils import np_utils
 
 import numpy as np
 import imutils
@@ -19,7 +24,7 @@ imagePaths = list(paths.list_images(IMAGES_PATH))
 # and labels list
 features = []
 labels = []
-
+num_classese = 6
 
 # loop over the input images
 for (i, imagePath) in enumerate(imagePaths):
@@ -30,7 +35,6 @@ for (i, imagePath) in enumerate(imagePaths):
         label = imagePath.split(os.path.sep)[-1].split("_")[0]
     
         # extract raw pixel intensity "features", followed by a color
-        
         pixels = image_to_feature_vector(image)
     
         features.append(pixels)
@@ -41,34 +45,31 @@ for (i, imagePath) in enumerate(imagePaths):
             print("[INFO] processed {}/{}".format(i, len(imagePaths)))
 
 
-# show some information on the memory consumed by the raw images
-# matrix and features matrix
-features = np.array(features)
-labels = np.array(labels)
-print("[INFO] features matrix: {:.2f}MB".format(
-    features.nbytes / (1024 * 1000.0)))
+le = LabelEncoder()
+labels = le.fit_transform(labels)
+labels = np_utils.to_categorical(labels, num_classese)
 
+features = np.array(features) / 255.0
 
 # partition the data into training and testing splits, using 75%
 # of the data for training and the remaining 25% for testing
+trainData, testData, trainLabels, testLabels = train_test_split(features, labels, test_size=0.25, random_state=42)
 
-(trainFeat, testFeat, trainLabels, testLabels) = train_test_split(
-    features, labels, test_size=0.25, random_state=42)
+model = Sequential()
+model.add(Dense(768, input_dim=3072, init="uniform", activation="relu"))
+model.add(Dense(384, init="uniform", activation="relu"))
+model.add(Dense(num_classese))
+model.add(Activation("softmax"))
 
-trainFeat, testFeat = make_standard(trainFeat, testFeat)
+print ("[INFO] compiling model...")
+sgd = SGD(lr=0.008)
+model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
+model.fit(trainData, trainLabels, nb_epoch=50, batch_size=128)
 
-
-
-
-# train and evaluate a k-NN classifer on the raw pixel intensities
-print("[INFO] evaluating MLP accuracy...")
-model = MLPClassifier(solver='lbfgs', 
-                      hidden_layer_sizes=(200, 80, 50), activation="relu", random_state=1)
-model.fit(trainFeat, trainLabels)
-acc = model.score(testFeat, testLabels)
-print("[INFO] MLP accuracy: {:.2f}%".format(acc * 100))
-
+print ("[INFO] evaluating on testing set...")
+loss, accuracy = model.evaluate(testData, testLabels, batch_size=128, verbose=1)
+print ("[INFO] loss = {:.4f}, accuracy = {:.4f}%".format(loss, accuracy * 100))
 
 # save trained model to a pickle file
-filename = "mlp_model.sav"
-pickle.dump(model, open(filename, 'wb'))
+filename = "keras_simple_nn.sav"
+model.save(filename)

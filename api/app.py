@@ -23,7 +23,7 @@ pokemon_entries = {
     "Pikachu": "It keeps its tail raised to monitor its surroundings. If you yank its tail, it will try to bite you.",
     "Squirtle": "Shoots water at prey while in the water. Withdraws into its shell when in danger.",
     "Blastoise": "Once it takes aim at its enemy, it blasts out water with even more force than a fire hose.",
-    "Alakazam": "A Pokemon that can memorize anything. It never forgets what it learns—thats why this Pokemon is smart.",
+    "Alakazam": "A Pokemon that can memorize anything. It never forgets what it learns - thats why this pokemon is smart.",
     "Charizard": "Charizard, the Flame Pokemon. Charizards powerful flame can melt absolutely anything.",
     "Bulbasaur": "It can go for days without eating a single morsel. In the bulb on its back, it stores energy.",
     "Articuno": "A legendary bird Pokemon. It freezes water that is contained in winter air and makes it snow.",
