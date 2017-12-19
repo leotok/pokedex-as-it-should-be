@@ -24,9 +24,9 @@
     		}
     	
          .pokemon-img {
-            height: auto;
-            width: 20vh;
-            max-width: 190px; 
+            
+            max-width: 125px; 
+            max-height: 200px;
          }
 
          .pokemon-name {
@@ -57,13 +57,12 @@
 
          .pokemon-img-div{
             position: relative;
-            margin-top: -26vh;
-            left: -13vh;
+            margin-top: -12.5%;
+            left: -6.55%;
          }
          
          .btns-input-div{
              position: relative;
-             margin-top: 12vh;
          }
     </style>
 
@@ -83,42 +82,41 @@
 	<div class="container-fluid">
 		<h1 class="titulo text-center">Pokedex</h1>
 	</div>
-    <div class="container-fluid">
+    <div class="container-fluid" style="height: 380px; margin-bottom:2rem">
 		<img class="img-responsive center-block" src="https://f1.pepst.com/c/1F0965/651720/ssc3/home/083/pokemon2012/pokedex.png_480_480_0_64000_0_1_0.png" alt="Pokedex">
         
         <!-- pokemon image -->
-        {% if pokemon_image %}
+        
         <div class="pokemon-img-div container-fluid">
-            <img class="pokemon-img center-block" src="{{pokemon_image}}" alt="">
-        {% endif %}
+            <img id="pokemon_img" class="pokemon-img center-block" src="" alt="">
         </div>
         
         <!-- pokemon name -->
-        {% if pokemon_name %}
+        
         <div class="pokemon-name-div container-fluid">
-            <h2 class="pokemon-name center-block">{{pokemon_name}}</h2>
+            <h2 id="pokemon_name" class="pokemon-name center-block"></h2>
         </div>
-        {% endif %} 
+        
       
         <!-- pokemon description -->
-        {% if pokemon_desc %}
+        
         <div class="pokemon-desc-div container-fluid">
-            <span class="pokemon-desc center-block">{{pokemon_desc}}</span>
+            <span id="pokemon_desc" class="pokemon-desc center-block"></span>
         </div>
-        {% endif %}
+        
 
     </div>
 
     <!-- form and buttons -->
     <div class="container btns-input-div">
-        <form method="POST" enctype="multipart/form-data" action="predict/pokemon">
+        <form method="POST" enctype="multipart/form-data" id="predict-form" >
             <div class="input-group container col-sm-6" id="form-container">
                 <label class="input-group-btn">
                     <span class="btn btn-primary">
-                        Browse&hellip; <input type="file" name=file style="display: none;">
+                        Browse&hellip; <input id="pokemon_input" type="file" name=file style="display: none;">
                     </span>
                 </label>
-                <input type="text" class="form-control" readonly>
+                <input  type="text" class="form-control" readonly>
             </div>
             <button type="submit" class="btn btn-success center-block" id="btn-go">GO!</button>
         </form>
@@ -169,6 +167,49 @@
                 responsiveVoice.speak(pokemon_desc);
             }
         });
+
+        $("#predict-form").on('submit', function () {
+            var formData = new FormData(this);
+            event.stopPropagation(); // Stop stuff happening
+            event.preventDefault(); // Totally stop stuff happening
+        
+            $.ajax({
+                url: "/predict",
+                type: 'POST',
+                data: formData,
+                success: function (data) {
+                    alert(data)
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    console.log(response)
+                    $("#pokemon_name").text(response.name)
+                    $("#pokemon_desc").text(response.description)
+                }
+            });
+        });
+
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+              var reader = new FileReader();
+          
+              reader.onload = function(e) {
+                $('#pokemon_img').attr('src', e.target.result);
+              }
+          
+              reader.readAsDataURL(input.files[0]);
+            }
+          }
+          
+          $("#pokemon_input").change(function() {
+            readURL(this);
+            $("#pokemon_name").text("")
+            $("#pokemon_desc").text("")
+          });
+
     </script>
     
 

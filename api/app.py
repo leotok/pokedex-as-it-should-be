@@ -2,7 +2,7 @@
 import json
 import os, sys
 
-from flask import Flask, render_template, redirect, url_for, request, send_from_directory, send_file, flash
+from flask import Flask, render_template, redirect, url_for, request, send_from_directory, send_file, flash, jsonify
 from werkzeug.utils import secure_filename
 
 REPO_PATH = os.path.dirname(os.path.abspath(os.path.dirname((__file__))))
@@ -45,23 +45,36 @@ def allowed_file(filename):
 
 
 ############## Views ##############
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    try:
-        pokemon_image = os.path.join(UPLOAD_FOLDER, request.args['pokemon_image'])
-    except:
-        pokemon_image = None
+    pokemon_name = request.args.get('pokemon_name')
+    pokemon_desc = request.args.get('pokemon_desc')
 
-    try:
-        pokemon_name = predict_mlp(pokemon_image).capitalize()
-        pokemon_desc = pokemon_entries.get(pokemon_name)
-    except:
-        pokemon_name = None
-        pokemon_desc = None
+    return render_template('index.html', pokemon_name=pokemon_name, pokemon_desc=pokemon_desc)
 
-    return render_template('index.html', pokemon_image=pokemon_image, pokemon_name=pokemon_name, pokemon_desc=pokemon_desc)
+@app.route('/predict', methods=['POST', 'GET'])
+def predict():
+    if 'file' not in request.files:
+        flash('No file part')
+        return redirect(request.url)
+    file = request.files['file']
+    
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        try:
+            pokemon_name = predict_mlp(file).capitalize()
+            pokemon_desc = pokemon_entries.get(pokemon_name)
+        except:
+            pokemon_name = None
+            pokemon_desc = None
+    
+    return jsonify({'name': pokemon_name, 'description': pokemon_desc})
 
-@app.route('/docker-test')
+# @app.route('/docker-test')
 def testping():
     hostname = "google.com"
     response = os.system("ping -c 1 " + hostname)
@@ -78,19 +91,21 @@ def get_pokemon_info():
         flash('No file part')
         return redirect(request.url)
     file = request.files['file']
-    # if user does not select file, browser also
-    # submit a empty part without filename
+    
     if file.filename == '':
         flash('No selected file')
         return redirect(request.url)
-    if os.path.isfile(file.filename):
-        path = os.path.join(FULL_UPLOAD_PATH, filename)
-        return redirect(url_for('index', pokemon_image=path))
+    
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        path = os.path.join(FULL_UPLOAD_PATH, filename)
-        file.save(path)
-        return redirect(url_for('index', pokemon_image=filename))
+        try:
+            pokemon_name = predict_mlp(file).capitalize()
+            pokemon_desc = pokemon_entries.get(pokemon_name)
+        except:
+            pokemon_name = None
+            pokemon_desc = None    
+        
+        return redirect(url_for('index', pokemon_name=pokemon_name, pokemon_desc=pokemon_desc))
 
     return render_template('bad request')
 
