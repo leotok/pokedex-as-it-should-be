@@ -65,36 +65,13 @@ def predict():
         try:
             pokemon_name = predict_mlp(file).capitalize()
             pokemon_desc = pokemon_entries.get(pokemon_name)
-        except:
+            msg = ""
+        except Exception as e:
             pokemon_name = None
             pokemon_desc = None
-    
-    return jsonify({'name': pokemon_name, 'description': pokemon_desc})
+            msg = str(e)
 
-
-@app.route('/predict/pokemon', methods=['POST'])
-def get_pokemon_info():
-    if 'file' not in request.files:
-        flash('No file part')
-        return redirect(request.url)
-    file = request.files['file']
-    
-    if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
-    
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        try:
-            pokemon_name = predict_mlp(file).capitalize()
-            pokemon_desc = pokemon_entries.get(pokemon_name)
-        except:
-            pokemon_name = None
-            pokemon_desc = None    
-        
-        return redirect(url_for('index', pokemon_name=pokemon_name, pokemon_desc=pokemon_desc))
-
-    return render_template('bad request')
+    return jsonify({'name': pokemon_name, 'description': pokemon_desc, "msg": msg})
 
 
 @app.route('/uploads/<filename>')
