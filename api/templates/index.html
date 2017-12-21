@@ -1,266 +1,208 @@
+<!-- https://codepen.io/anon/pen/ZvORex/ -->
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <style>   
-    	
-    	#btn-go{
-    		width: 100px;
-    		margin-top: 1vh;
-    	}
-        #btn-dg{
-    		width: 100px;
-    		margin-top: 2.5vh;
-    	}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Pokedex AI</title>
         
-        body {
-            font-family: monospace;
-            font-weight: bold;
-            color: black
-         }
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/pokedex.css">
+        <!-- open sans google font -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 
-    	.titulo {
-    		font-family: 'Open Sans', sans-serif;
-    		}
-    	
-         .pokemon-img {
-            
-            max-width: 125px; 
-            max-height: 200px;
-         }
+    </head>
 
-         .pokemon-name {
-             font-size: 2.5vh;
-             text-align: center;
-         }
-
-         .pokemon-desc {
-            font-size: 1.6vh;
-            text-align: justify;
-         }
-
-         .pokemon-name-div{
-            position: relative;
-            width: 35vw;
-            max-width: 190px;
-            top: -20vh;
-            left: 13.5vh;
-         }
-
-         .pokemon-desc-div{
-            position: relative;
-            width: 35vw;
-            max-width: 190px;
-            top: -20vh; 
-            left: 13.5vh; 
-         }
-
-         .pokemon-img-div{
-            position: relative;
-            margin-top: -12.5%;
-            left: -6.55%;
-         }
-         
-         .btns-input-div{
-             position: relative;
-         }
-    </style>
-
-
-
-
-
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Pokedex AI</title>
-</head>
-
-<body>
-	<div class="container-fluid">
-		<h1 class="titulo text-center">Pokedex</h1>
-	</div>
-    <div class="container-fluid" style="height: 380px; margin-bottom:2rem">
-		<img class="img-responsive center-block" src="https://f1.pepst.com/c/1F0965/651720/ssc3/home/083/pokemon2012/pokedex.png_480_480_0_64000_0_1_0.png" alt="Pokedex">
-        
-        <!-- pokemon image -->
-        
-        <div class="pokemon-img-div container-fluid">
-            <img id="pokemon_img" class="pokemon-img center-block" src="" alt="">
-        </div>
-        
-        <!-- pokemon name -->
-        
-        <div class="pokemon-name-div container-fluid">
-            <h2 id="pokemon_name" class="pokemon-name center-block"></h2>
-        </div>
-        
-      
-        <!-- pokemon description -->
-        
-        <div class="pokemon-desc-div container-fluid">
-            <span id="pokemon_desc" class="pokemon-desc center-block"></span>
-        </div>
-        
-
-    </div>
-
-    <!-- form and buttons -->
-    <div class="container btns-input-div">
-        <form method="POST" enctype="multipart/form-data" id="predict-form" >
-            <div class="input-group container col-sm-6" id="form-container">
-                <label class="input-group-btn">
-                    <span class="btn btn-primary">
-                        Browse&hellip; <input id="pokemon_input" type="file" name=file style="display: none;">
-                    </span>
-                </label>
-                <input  type="text" class="form-control" readonly>
+    <body>
+        <div id="pokedex">
+            <div id="left">
+                <div id="logo"></div>
+                <div id="bg_curve1_left"></div>
+                <div id="bg_curve2_left"></div>
+                <div id="curve1_left">
+                <div id="buttonGlass">
+                    <div id="reflect"> </div>
+                </div>
+                <div id="miniButtonGlass1"></div>
+                <div id="miniButtonGlass2"></div>
+                <div id="miniButtonGlass3"></div>
+                </div>
+                <div id="curve2_left">
+                <div id="junction">
+                    <div id="junction1"></div>
+                    <div id="junction2"></div>
+                </div>
+                </div>
+                <div id="screen">
+                <div id="topPicture">
+                    <div id="buttontopPicture1"></div>
+                    <div id="buttontopPicture2"></div>
+                </div>
+                <div id="picture">
+                    <img style="max-width:215px; max-height: 169px; border-radius: 11px;" id="pokemon_img" class="pokemon-img center-block" src="" alt="" height="170">
+                </div>
+                <div id="buttonbottomPicture">
+                    <a style="margin-left: 32px; color: #303030;" href="." class="" id="btn-dg">Restart</a>
+                </div>
+                <div id="speakers">
+                    <div class="sp"></div>
+                    <div class="sp"></div>
+                    <div class="sp"></div>
+                    <div class="sp"></div>
+                </div>
+                </div>
+                <form method="POST" enctype="multipart/form-data" id="predict-form" >    
+                    <label for="pokemon_input">
+                        <div id="bigbluebutton">
+                            <span style="margin-left: 11px; margin-top: 11px; font-size: 26px;" class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+                            <input id="pokemon_input" type="file" name=file style="display: none;">        
+                        </div>
+                    </label>
+                    <label for="go-btn">
+                        <div style="padding-top: 8px;" id="barbutton1">
+                            <span style="margin-left: 12px">Go!</span>
+                            <button id="go-btn" type="submit" style="display:none" class="">Go!</button>
+                        </div>
+                    </label>
+                </form>
+                <div id="barbutton2"></div>
+                <div id="cross">
+                <div id="leftcross">
+                    <div id="leftT"></div>
+                </div>
+                <div id="topcross">
+                    <div id="upT"></div>
+                </div>
+                <div id="rightcross">
+                    <div id="rightT"></div>
+                </div>
+                <div id="midcross">
+                    <div id="midCircle"></div>
+                </div>
+                <div id="botcross">
+                    <div id="downT"></div>
+                </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-success center-block" id="btn-go">GO!</button>
-        </form>
-    
-        <a href="." class="btn btn-danger center-block" id="btn-dg">Restart</a>
-    </div>
-    
-    <!-- available pokemons -->
-   <div class="container">
-   <div class="jumbotron">
-    <h2>Accepted Pokemons:</h2>
-    <ul>
-        <li>Alakazam</li>
-        <li>Arcanine</li>
-        <li>Articuno</li>
-        <li>Blastoise</li>
-        <li>Bulbasaur</li>
-        <li>Charizard</li>
-    </ul>
-    </div>
-    </div>
-
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            <div id="right">
+                <div id="stats">
+                <strong>Name :</strong><span id="pokemon_name"></span><br/>
+                <span id="pokemon_desc"></span>
+                </div>
+                <div id="blueButtons1">
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                </div>
+                <div id="blueButtons2">
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                <div class="blueButton"></div>
+                </div>
+                <div id="miniButtonGlass4"></div>
+                <div id="miniButtonGlass5"></div>
+                <div id="barbutton3"></div>
+                <div id="barbutton4"></div>
+                <div id="yellowBox1"></div>
+                <div id="yellowBox2"></div>
+                <div id="bg_curve1_right"></div>
+                <div id="bg_curve2_right"></div>
+                <div id="curve1_right"></div>
+                <div id="curve2_right"></div>
+            </div>
+        </div>
         
-        ga('create', 'UA-86478867-2', 'auto');
-        ga('send', 'pageview');
-    </script>
+        <footer style="text-align: center; width: 100%; position: absolute; top: 600px;">
+            <!-- available pokemons -->
+            <h2 >Accepted Pokemons:</h2>
+            <div style="display:inline-block; ">
+                    <li>Alakazam</li>
+                    <li>Arcanine</li>
+                    <li>Articuno</li>
+                    <li>Blastoise</li>
+                    <li>Bulbasaur</li>
+                    <li>Charizard</li>
+                </ul>
+            </div>
+            <hr>
+            <p style="text-align: center;">Developed by <a target="_blank" href="https://github.com/leotok">@leotok</a> and <a target="_blank" href="https://github.com/dbeyda">@dbeyda</a></p>
+            <p style="text-align: center;">Pokedex HTML and CSS by <a target="_blank" href="https://codepen.io/Bidji">@Bidji</a></p>
+        </footer>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  
-    <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
-    <script>
 
-        $(function() {
-            var pokemon_name = "{{pokemon_name}}";
-            var pokemon_desc = "{{pokemon_desc}}"
-            if (pokemon_name != "None")
-            {
-                responsiveVoice.speak(pokemon_name);
-            }
-            if (pokemon_desc != "None")
-            {
-                responsiveVoice.speak(pokemon_desc);
-            }
-        });
 
-        $("#predict-form").on('submit', function () {
-            var formData = new FormData(this);
-            event.stopPropagation(); // Stop stuff happening
-            event.preventDefault(); // Totally stop stuff happening
-        
-            $.ajax({
-                url: "/predict",
-                type: 'POST',
-                data: formData,
-                success: function (data) {
-                    alert(data)
-                },
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    console.log(response)
-                    $("#pokemon_name").text(response.name)
-                    $("#pokemon_desc").text(response.description)
-                }
+        <!-- Google Analytics -->
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            
+            ga('create', 'UA-86478867-2', 'auto');
+            ga('send', 'pageview');
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+        <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+        <script>
+
+            $("#predict-form").on('submit', function () {
+                var formData = new FormData(this);
+                event.stopPropagation(); // Stop stuff happening
+                event.preventDefault(); // Totally stop stuff happening
+                
+                console.log(formData);
+
+                $.ajax({
+                    url: "/predict",
+                    type: 'POST',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        console.log(response)
+                        $("#pokemon_name").text(response.name)
+                        $("#pokemon_desc").text(response.description)
+
+                        if (response.name && response.description) {
+                            responsiveVoice.speak(response.name + ". " + response.description);
+                        }
+                    }
+                });
             });
-        });
 
-        function readURL(input) {
+            function readURL(input) {
 
-            if (input.files && input.files[0]) {
-              var reader = new FileReader();
-          
-              reader.onload = function(e) {
-                $('#pokemon_img').attr('src', e.target.result);
-              }
-          
-              reader.readAsDataURL(input.files[0]);
+                if (input.files && input.files[0]) {
+                var reader = new FileReader();
+            
+                reader.onload = function(e) {
+                    $('#pokemon_img').attr('src', e.target.result);
+                }
+            
+                reader.readAsDataURL(input.files[0]);
+                }
             }
-          }
-          
-          $("#pokemon_input").change(function() {
-            readURL(this);
-            $("#pokemon_name").text("")
-            $("#pokemon_desc").text("")
-          });
+            
+            $("#pokemon_input").change(function() {
+                readURL(this);
+                $("#pokemon_name").text("")
+                $("#pokemon_desc").text("")
+            });
 
-    </script>
-    
+        </script>
+        
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>   
 
-
-<!-- show file name after selecting image -->
-<script>
-    $(function() {
-
-  // We can attach the `fileselect` event to all file inputs on the page
-  $(document).on('change', ':file', function() {
-    var input = $(this),
-        numFiles = input.get(0).files ? input.get(0).files.length : 1,
-        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    input.trigger('fileselect', [numFiles, label]);
-  });
-
-  // We can watch for our custom `fileselect` event like this
-  $(document).ready( function() {
-      $(':file').on('fileselect', function(event, numFiles, label) {
-
-          var input = $(this).parents('.input-group').find(':text'),
-              log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-          if( input.length ) {
-              input.val(log);
-          } else {
-              if( log ) alert(log);
-          }
-
-      });
-  });
-  
-});
-</script>
-
-
-
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-<script src="https://github.com/markusslima/bootstrap-filestyle/src/bootstrap-filestyle.min.js"> </script>
-
-<!-- open sans google font -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
-</body>
+    </body>
 </html>

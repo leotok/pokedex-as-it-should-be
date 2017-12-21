@@ -1,0 +1,60 @@
+#btn-go{
+    width: 100px;
+    margin-top: 1vh;
+}
+#btn-dg{
+    width: 100px;
+    margin-top: 2.5vh;
+}
+
+body {
+    font-family: monospace;
+    font-weight: bold;
+    color: black
+}
+
+.titulo {
+    font-family: 'Open Sans', sans-serif;
+    }
+
+.pokemon-img {
+    
+    max-width: 125px; 
+    max-height: 200px;
+}
+
+.pokemon-name {
+    font-size: 2.5vh;
+    text-align: center;
+}
+
+.pokemon-desc {
+    font-size: 1.6vh;
+    text-align: justify;
+}
+
+.pokemon-name-div{
+    position: relative;
+    width: 35vw;
+    max-width: 190px;
+    top: -20vh;
+    left: 13.5vh;
+}
+
+.pokemon-desc-div{
+    position: relative;
+    width: 35vw;
+    max-width: 190px;
+    top: -20vh; 
+    left: 13.5vh; 
+}
+
+.pokemon-img-div{
+    position: relative;
+    margin-top: -12.5%;
+    left: -6.55%;
+}
+
+.btns-input-div{
+    position: relative;
+}

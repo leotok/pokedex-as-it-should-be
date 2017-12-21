@@ -8,15 +8,19 @@ from werkzeug.utils import secure_filename
 REPO_PATH = os.path.dirname(os.path.abspath(os.path.dirname((__file__))))
 ML_PATH = os.path.join(REPO_PATH, "ml")
 API_ROOT = os.path.abspath(os.path.dirname((__file__)))
+UPLOAD_FOLDER = '/uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 sys.path.append(REPO_PATH)
 sys.path.append(ML_PATH)
 
 from ml.predict import predict_knn, predict_mlp
 
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-UPLOAD_FOLDER = '/uploads'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+FULL_UPLOAD_PATH = os.path.abspath(os.path.dirname(__file__)) + app.config['UPLOAD_FOLDER']
+
 
 pokemon_entries = {
     "Charmander": "The flame at the tip of its tail makes a sound as it burns. You can only hear it in quiet places.",
@@ -30,12 +34,6 @@ pokemon_entries = {
     "Arcanine": "A legendary Pokemon in China. Many people are charmed by its grace and beauty while running."
 
 }
-
-
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-FULL_UPLOAD_PATH = os.path.abspath(os.path.dirname(__file__)) + app.config['UPLOAD_FOLDER']
 
 ############## Helper functions ##############
 
@@ -51,6 +49,7 @@ def index():
     pokemon_desc = request.args.get('pokemon_desc')
 
     return render_template('index.html', pokemon_name=pokemon_name, pokemon_desc=pokemon_desc)
+
 
 @app.route('/predict', methods=['POST', 'GET'])
 def predict():
@@ -74,16 +73,6 @@ def predict():
     
     return jsonify({'name': pokemon_name, 'description': pokemon_desc})
 
-# @app.route('/docker-test')
-def testping():
-    hostname = "google.com"
-    response = os.system("ping -c 1 " + hostname)
-
-    #and then check the response...
-    if response == 0:
-        return str(hostname) + ' is up!'
-    else:
-        return str(hostname) + ' is down!'
 
 @app.route('/predict/pokemon', methods=['POST'])
 def get_pokemon_info():
@@ -114,9 +103,9 @@ def get_pokemon_info():
 def uploaded_file(filename):
     return send_from_directory(FULL_UPLOAD_PATH, filename)
 
-@app.route('/<path:path>')
+@app.route('/static/<path:path>')
 def send_static(path):
-    return send_from_directory(API_ROOT, path)
+    return send_from_directory('static', path)
 
 
 if __name__ == '__main__':
