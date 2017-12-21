@@ -9,7 +9,7 @@ REPO_PATH = os.path.dirname(os.path.abspath(os.path.dirname((__file__))))
 ML_PATH = os.path.join(REPO_PATH, "ml")
 API_ROOT = os.path.abspath(os.path.dirname((__file__)))
 UPLOAD_FOLDER = '/uploads'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
 
 sys.path.append(REPO_PATH)
 sys.path.append(ML_PATH)
@@ -38,21 +38,19 @@ pokemon_entries = {
 ############## Helper functions ##############
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    allowed_extensions = set(['png', 'jpg', 'jpeg'])
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
 
 ############## Views ##############
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    pokemon_name = request.args.get('pokemon_name')
-    pokemon_desc = request.args.get('pokemon_desc')
-
-    return render_template('index.html', pokemon_name=pokemon_name, pokemon_desc=pokemon_desc)
+    return render_template('index.html')
 
 
 @app.route('/predict', methods=['POST', 'GET'])
 def predict():
+    import ipdb; ipdb.set_trace(context=20)
     if 'file' not in request.files:
         flash('No file part')
         return redirect(request.url)
