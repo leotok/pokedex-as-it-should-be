@@ -1,7 +1,7 @@
-requests==2.9.1
-bs4==0.0.1
+# requests==2.9.1
+# bs4==0.0.1
 Flask==0.12.1
-sklearn
+# sklearn
 gunicorn==19.4.5
 bleach==1.5.0
 enum34==1.1.6
@@ -10,13 +10,13 @@ h5py==2.7.1
 html5lib==0.9999999
 imutils==0.4.4
 # Keras==2.1.2
-Markdown==2.6.10
-mock==2.0.0
+# Markdown==2.6.10
+# mock==2.0.0
 numpy==1.13.3
 olefile==0.44
-pandas==0.21.0
+# pandas==0.21.0
 pbr==3.1.1
-Pillow==4.3.0
+# Pillow==4.3.0
 protobuf==3.5.0.post1
 python-dateutil==2.6.1
 pytz==2017.3
