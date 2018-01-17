@@ -64,6 +64,8 @@ def predict():
         filename = secure_filename(file.filename)
         try:
             pokemon_name = predict_mlp(file).capitalize()
+            if pokemon_name == "Bulbassaur":
+                pokemon_name = "Bulbasaur"
             pokemon_desc = pokemon_entries.get(pokemon_name)
             msg = ""
         except Exception as e:
